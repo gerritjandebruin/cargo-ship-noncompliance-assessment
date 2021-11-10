@@ -1,0 +1,24 @@
+name: base
+channels:
+  - conda-forge
+dependencies:
+  - conda
+  - python=3.9
+  - cvxpy
+  - pandas
+  - scikit-learn
+  - nodejs
+  - networkx
+  - seaborn
+  - typer
+  - tqdm
+  - jupyterlab
+  - rich
+  - scipy
+  - joblib
+  - zsh
+  - ipykernel
+  - ipywidgets
+  - geopandas
+  - contextily
+prefix: /data/bruingjde/miniconda3
