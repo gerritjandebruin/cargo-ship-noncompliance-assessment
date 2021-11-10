@@ -1,33 +1,10 @@
-To run all analysis, run `make all`.
-You might need to install packages via either pip or conda.
+Prevent flying under false flag for merchant ships
+==================================================
 
-# Data
-## raw/inspections.csv
-Contains inspection results.
+See the notebooks folder for all analysis.
+Sometimes a call to the `.\src` folder is made from these notebooks.
+The `src`-folder is essentially a Python module which provides the most important code used in this research.
+All images are stored in `.\fig`.
+The yaml-file `environment.yml` contains the environment used in the research.
 
-## raw/portcalls_df.pkl
-Contains information about the portcalls. Used by src/clean.py.
-
-## raw/portcalls_new.csv
-Not used. Contains a newer set of portcalls.
-
-## raw/ports_df.pkl
-Not used. Contains information about the ports.
-
-# Notebooks
-## 04-performance.ipynb
-Summarizes information on the performance of learned classifiers.
-
-## 03-sanity_checks.ipynb
-In this notebook we check the following:
-- whether folds are uniform with PCA or t-SNE.
-- whether we can predict (either label or flag) with just PCA or t-SNE
-- whether number of portcalls, port stay, or travel times features are sufficient to predict (either label or flag)
-
-## 01-stats_inspections.ipynb
-This notebook provides some statistics on the inspections dataset.
-
-## 02-stats_portcalls.ipynb
-This notebook features some statistics of the portcalls dataset.
-We also test with a simple logistic regression model whether we can reconstruct the baseline classification using some of the information that is used to construct this baseline classification.
-
+Unfortunately, we cannot make the data public yet.
