@@ -1,4 +1,4 @@
-Prevent flying under false flag for merchant ships
+Prevent flying under false flag for cargo shipsusing fair learning and networks
 ==================================================
 
 See the notebooks for all analysis.
