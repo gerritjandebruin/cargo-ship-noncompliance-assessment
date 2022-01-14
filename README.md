@@ -1,4 +1,4 @@
-Prevent flying under false flag for cargo shipsusing fair learning and networks
+Fair automated assessment of noncompliance in cargo ship networks
 ==================================================
 
 See the notebooks for all analysis.
