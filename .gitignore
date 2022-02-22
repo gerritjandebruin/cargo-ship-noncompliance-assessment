@@ -1,11 +1,18 @@
 *.pkl
 *.npy
 *.bkp
-data/
-cache/
-
-# Temp files
-temp.py
+data/raw/gisis.csv
+data/raw/inspections.csv
+data/raw/portcalls.csv
+data/intermediate/*
+!data/intermediate/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+models/inner_folds
+!models/inner_folds/.gitkeep
+models/outer_folds
+!models/outer_folds/.gitkeep
+old/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

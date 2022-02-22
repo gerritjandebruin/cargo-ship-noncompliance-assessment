@@ -1,9 +1,8 @@
 Fair automated assessment of noncompliance in cargo ship networks
-==================================================
+=================================================================
 
+First run `./run.py` to apply the entire pipeline (cleaning and processing data, network construction, feature engineering, and learning the models).
 See the notebooks for all analysis.
-Sometimes a call to the `.\src` folder is made from these notebooks.
-The `src`-folder is essentially a Python module which provides the most important code used in this research.
 All images are stored in `.\fig`.
 The yaml-file `environment.yml` contains the environment used in the research.
 
