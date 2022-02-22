@@ -21,7 +21,7 @@ def construct_network(portcalls: pd.DataFrame) -> nx.DiGraph:
         dict(network_base.nodes(data=True)), orient='index')
     """    
     assert 'port' in portcalls.columns
-    assert 'arrivals' in portcalls.columns
+    assert 'arrival' in portcalls.columns
     assert 'departure' in portcalls.columns
     assert 'ship' in portcalls.columns
     
