@@ -46,7 +46,7 @@ def learn(X: pd.DataFrame, y: pd.DataFrame, s: pd.DataFrame, outer_folds: list,
         (max_depth, n_bins, ortho, fold, trainval_idx, test_idx)
         for max_depth, n_bins, ortho in params
         for fold, (trainval_idx, test_idx) in outer_folds
-        if not isfile(f'model/outer_folds/{max_depth}-{ortho:.2f}-{n_bins}-{fold}.pkl')
+        if not isfile(f'models/outer_folds/{max_depth}-{ortho:.2f}-{n_bins}-{fold}.pkl')
     ]
     
     for max_depth, n_bins, ortho, fold, trainval_idx, test_idx in tqdm(iterations):

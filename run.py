@@ -22,7 +22,7 @@ filepath_ships_network = 'models/ships_network.npy'
 filepath_ships_classification = 'models/ships_classification.npy'
 filepath_network = 'models/network.pkl'
 filepath_folds = 'models/folds.pkl'
-filepath_x = 'models/X.pkl'
+filepath_x = 'models/x.pkl'
 filepath_y = 'models/y.pkl'
 filepath_s = 'models/s.pkl'
 filepath_outer_folds = 'models/outer_folds.pkl'
@@ -67,7 +67,7 @@ def run():
     ships_network_exists = os.path.isfile(filepath_ships_network)
     if not (ships_classification_exists and ships_network_exists):
         portcalls_processed = pd.read_pickle(filepath_portcalls_processed)
-        inspections_processed = pd.read_pickle(inspections_processed)
+        inspections_processed = pd.read_pickle(filepath_inspections_processed)
         ships_classification, ships_network = src.divide_ships(
             portcalls_processed, inspections_processed)
         np.save(filepath_ships_classification, ships_classification)
@@ -80,54 +80,61 @@ def run():
         portcalls_network = portcalls_processed.loc[
             lambda x: x['ship'].isin(ships_network)]
         network = src.construct_network(portcalls_network)
-        nx.write_gpickle(network, filepath_ships_network)        
+        nx.write_gpickle(network, filepath_network)        
     
-    # if not os.path.isfile(filepath_x):
-    #     portcalls_processed = pd.read_pickle(filepath_portcalls_processed)
-    #     ships_network = np.load(filepath_ships_network)
-    #     portcalls_network = portcalls_processed.loc[
-    #         lambda x: x['ship'].isin(ships_network)]
-    #     ships_classification = np.load(filepath_ships_classification)
-    #     portcalls_classification = portcalls_processed.loc[
-    #         lambda x: x['ship'].isin(ships_classification)]
-    #     X = src.get_features(portcalls_network, portcalls_classification, 
-    #                          network)
-    #     X.to_pickle(filepath_x)
+    src.logger.info('#8 Get features.')
+    if not os.path.isfile(filepath_x):
+        portcalls_processed = pd.read_pickle(filepath_portcalls_processed)
+        ships_network = np.load(filepath_ships_network, allow_pickle=True)
+        portcalls_network = portcalls_processed.loc[
+            lambda x: x['ship'].isin(ships_network)]
+        ships_classification = np.load(filepath_ships_classification, 
+                                       allow_pickle=True)
+        portcalls_classification = portcalls_processed.loc[
+            lambda x: x['ship'].isin(ships_classification)]
+        network = nx.read_gpickle(filepath_network)
+        X = src.get_features(portcalls_network, portcalls_classification, 
+                             network)
+        X.to_pickle(filepath_x)
         
-    # if not os.path.isfile(filepath_y):
-    #     portcalls_processed = pd.read_pickle(filepath_portcalls_processed)
-    #     inspections_processed = pd.read_pickle(filepath_inspections_processed)
-    #     ships_classification = np.load(filepath_ships_classification)
-    #     portcalls_classification = portcalls_processed.loc[
-    #         lambda x: x['ship'].isin(ships_classification)]
-    #     inspections_classification = inspections_processed.loc[
-    #         lambda x: x['IMO'].isin(ships_classification)]
-    #     y = src.get_targets(portcalls_classification, 
-    #                         inspections_classification)
-    #     y.to_pickle(filepath_y)
+    src.logger.info('#9 Get targets.')
+    if not os.path.isfile(filepath_y):
+        inspections_processed = pd.read_pickle(filepath_inspections_processed)
+        ships_classification = np.load(filepath_ships_classification, 
+                                       allow_pickle=True)
+        inspections_classification = inspections_processed.loc[
+            lambda x: x['IMO'].isin(ships_classification)]
+        y = src.get_targets(inspections_classification, ships_classification)
+        y.to_pickle(filepath_y)
         
-    # if not os.path.isfile(filepath_s):
-    #     portcalls_processed = pd.read_pickle(filepath_portcalls_processed)
-    #     ships_classification = np.load(filepath_ships_classification)
-    #     portcalls_classification = portcalls_processed.loc[
-    #         lambda x: x['ship'].isin(ships_classification)]
-    #     src.get_sensitive_group(portcalls_classification, ships_classification)
+    src.logger.info('#10 Get sensitive group.')
+    if not os.path.isfile(filepath_s):
+        portcalls_processed = pd.read_pickle(filepath_portcalls_processed)
+        ships_classification = np.load(filepath_ships_classification, 
+                                       allow_pickle=True)
+        portcalls_classification = portcalls_processed.loc[
+            lambda x: x['ship'].isin(ships_classification)]
+        s = src.get_sensitive_group(portcalls_classification, 
+                                    ships_classification)
+        s.to_pickle(filepath_s)
         
-    # if not os.path.isfile(filepath_folds):
-    #     x = pd.read_pickle(filepath_x)
-    #     y = pd.read_pickle(filepath_y)
-    #     s = pd.read_pickle(filepath_s)
-    #     outer_folds, inner_folds = src.get_folds(x, y, s)
-    #     joblib.dump(outer_folds, filepath_outer_folds)
-    #     joblib.dump(inner_folds, filepath_inner_folds)
+    src.logger.info('#11 Get folds.')
+    if not os.path.isfile(filepath_folds):
+        x = pd.read_pickle(filepath_x)
+        y = pd.read_pickle(filepath_y)
+        s = pd.read_pickle(filepath_s)
+        outer_folds, inner_folds = src.get_folds(x, y, s)
+        joblib.dump(outer_folds, filepath_outer_folds)
+        joblib.dump(inner_folds, filepath_inner_folds)
         
-    # X = pd.read_pickle(filepath_x)
-    # y = pd.read_pickle(filepath_y)
-    # s = pd.read_pickle(filepath_s)
-    # outer_folds = joblib.load(filepath_outer_folds)
-    # inner_folds = joblib.load(filepath_inner_folds)
-    # performance_folds = src.learn(X, y, s, outer_folds, inner_folds)
-    # performance_folds.to_pickle(filepath_performance_folds)
+    src.logger.info('#12 Get performance over every fold.')
+    X = pd.read_pickle(filepath_x)
+    y = pd.read_pickle(filepath_y)
+    s = pd.read_pickle(filepath_s)
+    outer_folds = joblib.load(filepath_outer_folds)
+    inner_folds = joblib.load(filepath_inner_folds)
+    performance_folds = src.learn(X, y, s, outer_folds, inner_folds)
+    performance_folds.to_pickle(filepath_performance_folds)
     
     
 if __name__ == '__main__':

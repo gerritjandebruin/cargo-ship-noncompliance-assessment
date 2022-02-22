@@ -11,12 +11,14 @@ def divide_ships(portcalls: pd.DataFrame, inspections: pd.DataFrame):
         - ships_classification (90% random sample)
         - ships_network (10% random sample)
     """
-    assert all([col in portcalls.columns for col in ('IMO', )])
+    assert all([col in portcalls.columns for col in ('ship', )])
     assert all([col in inspections.columns for col in ('WasDetained', 'IMO')])
     
     ships_inspected = set(portcalls['ship'].unique())
     ships_detained = set(
-        inspections.loc[lambda x: x['WasDetained', 'IMO'].unique()])
+        inspections
+        .loc[lambda x: x['WasDetained'], 'IMO']
+        .unique())
     ships = portcalls['ship'].unique()
     stratify = list()
     

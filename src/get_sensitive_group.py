@@ -12,7 +12,7 @@ def get_sensitive_group(portcalls: pd.DataFrame,
         .groupby('ship')
         ['flag']
         .last()
-        [ships]
+        .loc[ships]
         .astype(int)
         .astype(bool)
     )
