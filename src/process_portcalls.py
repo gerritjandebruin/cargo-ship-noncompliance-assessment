@@ -20,13 +20,14 @@ def process_portcalls(portcalls: pd.DataFrame,
     cols = ['risk', 'flag', 'arrival', 'departure', 'ship', 'port']
     assert all([col in portcalls.columns for col in cols])
     assert portcalls['risk'].dtype == 'Int8'
-    assert portcalls['flag'].dtype == 'int8'
+    assert portcalls['flag'].dtype == 'Int8'
     assert np.issubdtype(portcalls['arrival'], np.datetime64)
     assert np.issubdtype(portcalls['departure'], np.datetime64)
     assert all(portcalls['departure'] > portcalls['arrival'])
     
     return (
         portcalls
+        .dropna(subset=['flag'])
         .fillna({'risk': 1}) # See notebook
         .astype({'flag': 'bool'})
         .loc[lambda x: start_date <= x['arrival']]

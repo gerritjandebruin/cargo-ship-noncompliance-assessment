@@ -32,13 +32,21 @@ def import_portcalls(filepath: str, flag_performance: dict):
                 'X.ATA..Ship.Type.Is.High.Risk': 'type_high_risk',
                 'X.ATA..Ship.Flag.Is.PMOU': 'flag_in_pmou',
                 'X.ATA..Ship.Priority': 'priority'
-                })
+            })
         .assign(
             flag_code=lambda x: x['flag'],
             flag=lambda x: x['flag'].replace(flag_performance))
         .dropna(subset=['flag'])
-        .replace({'risk': {'HRS': 2, 'SRS': 1, 'LRS': 0}})
-        .astype({'port': str, 'ship': str, 'risk': 'Int8', 'flag': 'int8'})
+        .replace({
+            'risk': {'HRS': 2, 'SRS': 1, 'LRS': 0},
+            'flag': {
+                'CV': pd.NA, 
+                'NOT_MENTIONED': pd.NA, 
+                'REGISTER_WITHDRAWN': pd.NA, 
+                'MZ': pd.NA
+            }
+        })
+        .astype({'port': str, 'ship': str, 'risk': 'Int8', 'flag': 'Int8'})
         .sort_values('arrival')
         [[
             'arrival', 'departure', 'port', 'ship', 'risk', 'flag', 
