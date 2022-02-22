@@ -4,8 +4,8 @@
 data/raw/gisis.csv
 data/raw/inspections.csv
 data/raw/portcalls.csv
-data/intermediate/*
-!data/intermediate/.gitkeep
+data/cleaned/*
+!data/cleaned/.gitkeep
 data/processed/*
 !data/processed/.gitkeep
 models/inner_folds
