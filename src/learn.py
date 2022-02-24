@@ -31,7 +31,7 @@ def learn(X: pd.DataFrame, y: pd.DataFrame, s: pd.DataFrame, outer_folds: list,
     
     # Convert X, y, s to np.arrays for compatibility reasons.
     X = np.ascontiguousarray(X.values)
-    y = np.ascontiguousarray(y.values.ravel())
+    y = np.ascontiguousarray(y.values.ravel()) > 1
     s = np.ascontiguousarray(s.values.ravel())
     
     params = [

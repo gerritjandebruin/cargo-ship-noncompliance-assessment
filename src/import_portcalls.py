@@ -36,7 +36,6 @@ def import_portcalls(filepath: str, flag_performance: dict):
         .assign(
             flag_code=lambda x: x['flag'],
             flag=lambda x: x['flag'].replace(flag_performance))
-        .dropna(subset=['flag'])
         .replace({
             'risk': {'HRS': 2, 'SRS': 1, 'LRS': 0},
             'flag': {
@@ -46,6 +45,7 @@ def import_portcalls(filepath: str, flag_performance: dict):
                 'MZ': pd.NA
             }
         })
+        .fillna({'flag': 1})
         .astype({'port': str, 'ship': str, 'risk': 'Int8', 'flag': 'Int8'})
         .sort_values('arrival')
         [[

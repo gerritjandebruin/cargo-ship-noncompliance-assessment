@@ -5,7 +5,6 @@ from sklearn.model_selection import StratifiedKFold
 def get_folds(X: pd.DataFrame, y: pd.Series, s: pd.Series, 
               random_state: int=42) -> tuple[list, list]:
     """Provide the outer and inner folds for the given instances."""
-    print(y)
     X = np.ascontiguousarray(X.values)
     y = np.ascontiguousarray(y.values.ravel())
     s = np.ascontiguousarray(s.values.ravel())

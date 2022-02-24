@@ -2,6 +2,7 @@
 
 import json
 import os
+import subprocess
 
 import joblib
 import networkx as nx
@@ -30,6 +31,10 @@ filepath_inner_folds = 'models/inner_folds.pkl'
 filepath_performance_folds = 'models/performance_folds.pkl'
 
 def run():
+    src.logger.info('#0 Check installs')
+    if not os.path.isfile('teexgraph/teexgraph'):
+        subprocess.run(['make', 'install'])
+    
     src.logger.info("#1 Import inspections.") 
     if not os.path.isfile(filepath_inspections_cleaned):
         inspections_cleaned = src.import_inspections(filepath_inspections_raw)

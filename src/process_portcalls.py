@@ -27,7 +27,6 @@ def process_portcalls(portcalls: pd.DataFrame,
     
     return (
         portcalls
-        .dropna(subset=['flag'])
         .fillna({'risk': 1}) # See notebook
         .astype({'flag': 'bool'})
         .loc[lambda x: start_date <= x['arrival']]
