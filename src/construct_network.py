@@ -1,7 +1,6 @@
-import os
-
 import networkx as nx
 import pandas as pd
+
 
 def construct_network(portcalls: pd.DataFrame) -> nx.DiGraph:
     """
