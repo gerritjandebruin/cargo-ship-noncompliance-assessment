@@ -30,7 +30,7 @@ def construct_network(portcalls: pd.DataFrame) -> nx.DiGraph:
                 {
                     'source': ship_df['port'].shift(1),
                     'target': ship_df['port'],
-                'duration': (
+                    'duration': (
                         ship_df['arrival'] - ship_df['departure'].shift(1)),
                     'weight': len(ship_df) - 1,
                     'distance': 1/(len(ship_df) - 1),
@@ -39,6 +39,8 @@ def construct_network(portcalls: pd.DataFrame) -> nx.DiGraph:
             for _, ship_df in portcalls.groupby('ship')
         ]
     )
+    
+    assert all(edgelist['duration'] > 0)
 
     # Get graph
     G = nx.from_pandas_edgelist(edgelist, edge_attr=True, 
