@@ -29,13 +29,12 @@ def construct_network(portcalls: pd.DataFrame) -> nx.DiGraph:
         [
             pd.DataFrame(
                 {
-                'source': portcalls['port'].shift(1),
-                'target': portcalls['port'],
+                    'source': ship_df['port'].shift(1),
+                    'target': ship_df['port'],
                 'duration': (
-                    portcalls['arrival'] - portcalls['departure'].shift(1)
-                ),
-                'weight': len(portcalls) - 1,
-                'distance': 1/(len(portcalls) - 1),
+                        ship_df['arrival'] - ship_df['departure'].shift(1)),
+                    'weight': len(ship_df) - 1,
+                    'distance': 1/(len(ship_df) - 1),
                 }
             ).dropna()
             for _, ship_df in portcalls.groupby('ship')
