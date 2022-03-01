@@ -23,22 +23,26 @@ def construct_network(portcalls: pd.DataFrame) -> nx.DiGraph:
     assert 'arrival' in portcalls.columns
     assert 'departure' in portcalls.columns
     assert 'ship' in portcalls.columns
+    assert all(
+        (portcalls['departure']-portcalls['arrival']).dropna() > pd.Timedelta(0)
+    )
     
-    edgelist = pd.concat(
-        [
-            pd.DataFrame(
+    objs = list()
+    for _, ship_df in portcalls.groupby('ship'):
+        duration = ship_df['arrival'] - ship_df['departure'].shift(1)
+        assert all(duration.dropna() >= pd.Timedelta(0)), (
+            print(ship_df['arrival'], ship_df['departure'].shift(1)), duration)
+        obj = pd.DataFrame(
                 {
                     'source': ship_df['port'].shift(1),
                     'target': ship_df['port'],
-                    'duration': (
-                        ship_df['arrival'] - ship_df['departure'].shift(1)),
+                'duration': duration,
                     'weight': len(ship_df) - 1,
                     'distance': 1/(len(ship_df) - 1),
                 }
             ).dropna()
-            for _, ship_df in portcalls.groupby('ship')
-        ]
-    )
+        objs.append(obj)
+    edgelist = pd.concat(objs)
     
     assert all(edgelist['duration'] > 0)
 
