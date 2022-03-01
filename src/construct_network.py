@@ -33,18 +33,18 @@ def construct_network(portcalls: pd.DataFrame) -> nx.DiGraph:
         assert all(duration.dropna() >= pd.Timedelta(0)), (
             print(ship_df['arrival'], ship_df['departure'].shift(1)), duration)
         obj = pd.DataFrame(
-                {
-                    'source': ship_df['port'].shift(1),
-                    'target': ship_df['port'],
+            {
+                'source': ship_df['port'].shift(1),
+                'target': ship_df['port'],
                 'duration': duration,
-                    'weight': len(ship_df) - 1,
-                    'distance': 1/(len(ship_df) - 1),
-                }
-            ).dropna()
+                'weight': len(ship_df) - 1,
+                'distance': 1/(len(ship_df) - 1),
+            }
+        ).dropna()
         objs.append(obj)
     edgelist = pd.concat(objs)
-    
-    assert all(edgelist['duration'] > 0)
+
+    assert all(edgelist['duration'] >= pd.Timedelta(0))
 
     # Get graph
     G = nx.from_pandas_edgelist(edgelist, edge_attr=True, 
