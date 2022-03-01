@@ -13,6 +13,7 @@ models/inner_folds
 models/outer_folds
 !models/outer_folds/.gitkeep
 old/*
+teexgraph/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
